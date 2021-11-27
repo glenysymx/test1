@@ -13,7 +13,18 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class WordCount {
+import java.io.*;
+import java.util.*;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.fs.*;
+import org.apache.hadoop.mapreduce.lib.input.*;
+import org.apache.hadoop.mapreduce.lib.output.*;
+import org.apache.hadoop.util.*;
+
+public class WordCount extends Configured implements Tool{
 
 //mapper class
   public static class WCMapper
@@ -110,21 +121,37 @@ public static class WCPart extends Partitioner<Text, IntWritable>{
   }
 }
 
-  public static void main(String[] args) throws Exception {
+  @Override
+
+  public int run(String[] arg) throws Exception{
     Configuration conf = new Configuration();
     Job job = Job.getInstance(conf, "word count");
-    
     job.setJarByClass(WordCount.class);
+	
+    FileInputFormat.addInputPath(job, new Path(args[0]));
+    FileOutputFormat.setOutputPath(job, new Path(args[1]));
 	  
     job.setMapperClass(WCMapper.class);
+	  
+    job.setPartitionerClass(WcMap.class);
+    
     job.setReducerClass(WCReducer.class);
     job.setOutputKeyClass(Text.class);
     job.setNumReduceTasks(10);
 	  
+
     job.setOutputValueClass(IntWritable.class);
-    FileInputFormat.addInputPath(job, new Path(args[0]));
-    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
     System.exit(job.waitForCompletion(true) ? 0 : 1);
+    return 0;
+	  
+  }
+  public static void main(String[] args) throws Exception {
+    int res = ToolRunner.run(new Configuration(), new WordCountFinal(),ar);
+    System.exit(0);
+	  
+
+
   }
 }
 
