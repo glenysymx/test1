@@ -136,7 +136,7 @@ public static class WCPart extends Partitioner<Text,IntWritable>{
 	  
     job.setMapperClass(WCMapper.class);
 	  
-    job.setPartitionerClass(WcMap.class);
+    job.setPartitionerClass(WCMap.class);
     
     job.setReducerClass(WCReducer.class);
     job.setOutputKeyClass(Text.class);
@@ -150,7 +150,7 @@ public static class WCPart extends Partitioner<Text,IntWritable>{
 	  
   }
   public static void main(String[] args) throws Exception {
-    int res = ToolRunner.run(new Configuration(), new WordCountFinal(),ar);
+    int res = ToolRunner.run(new Configuration(), new WordCount3(),ar);
     System.exit(0);
 	  
 
