@@ -24,7 +24,7 @@ import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
 import org.apache.hadoop.util.*;
 
-public class WordCount extends Configured implements Tool{
+public class WordCount3 extends Configured implements Tool{
 
 //mapper class
   public static class WCMapper
@@ -32,8 +32,10 @@ public class WordCount extends Configured implements Tool{
 
     private final static IntWritable one = new IntWritable(1);
     private Text word = new Text();
+	  
     static int cnt = 0;
     List ls = new ArrayList();
+	  
     @SuppressWarnings("unchecked")
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
@@ -85,35 +87,36 @@ public class WordCount extends Configured implements Tool{
       context.write(key, result);
     }
   }
-public static class WCPart extends Partitioner<Text, IntWritable>{
+public static class WCPart extends Partitioner<Text,IntWritable>{
+	
   @Override
   public int getPartition(Text key, IntWritable value, int numReduceTasks){
 	  String myWord = key.toString();
-	  if(myWord.startsWith("a") || myWord.startswith("b") || myWord.startsWith("c")){
+	  if(myWord.startsWith("a") || myWord.startsWith("b") || myWord.startsWith("c")){
 		  return 0;
 	  }
-	  if(myWord.startsWith("d") || myWord.startswith("e") || myWord.startsWith("f")){
+	  if(myWord.startsWith("d") || myWord.startsWith("e") || myWord.startsWith("f")){
 		  return 1;
 	  }
-	  if(myWord.startsWith("g") || myWord.startswith("h") || myWord.startsWith("i")){
+	  if(myWord.startsWith("g") || myWord.startsWith("h") || myWord.startsWith("i")){
 		  return 2;
 	  }
- 	  if(myWord.startsWith("j") || myWord.startswith("k") || myWord.startsWith("l")){
+ 	  if(myWord.startsWith("j") || myWord.startsWith("k") || myWord.startsWith("l")){
 		  return 3;
 	  }
-	  if(myWord.startsWith("m") || myWord.startswith("n") || myWord.startsWith("o")){
+	  if(myWord.startsWith("m") || myWord.startsWith("n") || myWord.startsWith("o")){
 		  return 4;
 	  }
-	  if(myWord.startsWith("p") || myWord.startswith("q") || myWord.startsWith("r")){
+	  if(myWord.startsWith("p") || myWord.startsWith("q") || myWord.startsWith("r")){
 		  return 5;
 	  }
-	  if(myWord.startsWith("s") || myWord.startswith("t") || myWord.startsWith("u")){
+	  if(myWord.startsWith("s") || myWord.startsWith("t") || myWord.startsWith("u")){
 		  return 6;
 	  }
-	  if(myWord.startsWith("v") || myWord.startswith("w") || myWord.startsWith("x")){
+	  if(myWord.startsWith("v") || myWord.startsWith("w") || myWord.startsWith("x")){
 		  return 7;
 	  }
-	  if(myWord.startsWith("y") || myWord.startswith("z")){
+	  if(myWord.startsWith("y") || myWord.startsWith("z")){
 		  return 8;
 	  } else {
 		  return 9;
@@ -128,8 +131,8 @@ public static class WCPart extends Partitioner<Text, IntWritable>{
     Job job = Job.getInstance(conf, "word count");
     job.setJarByClass(WordCount.class);
 	
-    FileInputFormat.addInputPath(job, new Path(args[0]));
-    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    FileInputFormat.addInputPath(job, new Path(arg[0]));
+    FileOutputFormat.setOutputPath(job, new Path(arg[1]));
 	  
     job.setMapperClass(WCMapper.class);
 	  
