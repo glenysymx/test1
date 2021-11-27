@@ -15,6 +15,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class WordCount {
 
+//mapper class
   public static class WCMapper
        extends Mapper<Object, Text, Text, IntWritable>{
 
@@ -57,6 +58,7 @@ public class WordCount {
     }
   }
 
+	//reducer class
   public static class WCReducer
        extends Reducer<Text,IntWritable,Text,IntWritable> {
     private IntWritable result = new IntWritable();
@@ -72,14 +74,53 @@ public class WordCount {
       context.write(key, result);
     }
   }
+public static class WCPart extends Partitioner<Text, IntWritable>{
+  @Override
+  public int getPartition(Text key, IntWritable value, int numReduceTasks){
+	  String myWord = key.toString();
+	  if(myWord.startsWith("a") || myWord.startswith("b") || myWord.startsWith("c")){
+		  return 0;
+	  }
+	  if(myWord.startsWith("d") || myWord.startswith("e") || myWord.startsWith("f")){
+		  return 1;
+	  }
+	  if(myWord.startsWith("g") || myWord.startswith("h") || myWord.startsWith("i")){
+		  return 2;
+	  }
+ 	  if(myWord.startsWith("j") || myWord.startswith("k") || myWord.startsWith("l")){
+		  return 3;
+	  }
+	  if(myWord.startsWith("m") || myWord.startswith("n") || myWord.startsWith("o")){
+		  return 4;
+	  }
+	  if(myWord.startsWith("p") || myWord.startswith("q") || myWord.startsWith("r")){
+		  return 5;
+	  }
+	  if(myWord.startsWith("s") || myWord.startswith("t") || myWord.startsWith("u")){
+		  return 6;
+	  }
+	  if(myWord.startsWith("v") || myWord.startswith("w") || myWord.startsWith("x")){
+		  return 7;
+	  }
+	  if(myWord.startsWith("y") || myWord.startswith("z")){
+		  return 8;
+	  } else {
+		  return 9;
+	  }
+  }
+}
 
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
     Job job = Job.getInstance(conf, "word count");
+    
     job.setJarByClass(WordCount.class);
+	  
     job.setMapperClass(WCMapper.class);
     job.setReducerClass(WCReducer.class);
     job.setOutputKeyClass(Text.class);
+    job.setNumReduceTasks(10);
+	  
     job.setOutputValueClass(IntWritable.class);
     FileInputFormat.addInputPath(job, new Path(args[0]));
     FileOutputFormat.setOutputPath(job, new Path(args[1]));
