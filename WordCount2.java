@@ -38,12 +38,12 @@ public class WordCount {
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
     	StringBuffer str = new StringBuffer("");
-	for (int i = 0; i < ls.size() - 3; i++) {
+	for (int i = 0; i < ls.size() - 1; i++) {
 		int k=i;
-		for(int j=0;j<3;j++) {
-			if(j>0) {
-				str = str.append(" ");
+		for(int j=0;j<2;j++) {
+			if(j==0) {
 				str = str.append(ls.get(k));
+				str = str.append(" ");
 			} else 
 			{
 				str = str.append(ls.get(k));
